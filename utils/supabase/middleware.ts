@@ -37,6 +37,13 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (user && request.nextUrl.pathname.startsWith('/')) {
+    console.log('user is logged in');
+    // const url = request.nextUrl.clone();
+    // url.pathname = '/protected';
+    // return NextResponse.redirect(url);
+  }
+
   if (
     !user &&
     !request.nextUrl.pathname.startsWith('/signin') &&
@@ -48,6 +55,12 @@ export async function updateSession(request: NextRequest) {
     url.pathname = '/signin'
     return NextResponse.redirect(url)
   }
+
+  // if (user && request.nextUrl.pathname.startsWith('/')) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = '/protected';
+  //   return NextResponse.redirect(url);
+  // }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:

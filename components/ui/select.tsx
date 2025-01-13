@@ -18,7 +18,7 @@ const SelectTrigger = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.Trigger>,
     React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, children, ...props }, forwardedRef ) => (
-    <SelectPrimitive.Trigger {...props} ref={forwardedRef} className={cn("flex-1 inline-flex items-center justify-between px-3 py-2 h-10 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border rounded-md")}>
+    <SelectPrimitive.Trigger {...props} ref={forwardedRef} className={cn("flex-1 inline-flex items-center justify-between px-3 py-2 h-10 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border rounded-md", className)}>
         {children}
     </SelectPrimitive.Trigger>
 ))
@@ -36,11 +36,11 @@ const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ className, children, ...props }, forwardedRef) => (
-  <SelectPrimitive.Item {...props} ref={forwardedRef}>
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+  <SelectPrimitive.Item className={cn("py-2 px-3 flex items-center text-sm rounded-md hover:outline-none hover:bg-gray-300", className)} {...props} ref={forwardedRef}>
     <SelectPrimitive.ItemIndicator>
-        <Check />
+        <Check size={15} />
     </SelectPrimitive.ItemIndicator>
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ));
 

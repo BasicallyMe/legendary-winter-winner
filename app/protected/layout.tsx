@@ -1,19 +1,15 @@
 import Link from "next/link";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/app-sidebar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <SidebarProvider>
+      <AppSidebar />
       <div>
-        <ul>
-          <li>
-            <Link href="/protected/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link href="/protected/issues">Issues</Link>
-          </li>
-        </ul>
+        <SidebarTrigger />
+        {children}
       </div>
-      <div>{children}</div>
-    </div>
+    </SidebarProvider>
   );
 }

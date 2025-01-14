@@ -6,8 +6,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div>
-        <SidebarTrigger />
+      <div className="w-full">
         {children}
       </div>
     </SidebarProvider>

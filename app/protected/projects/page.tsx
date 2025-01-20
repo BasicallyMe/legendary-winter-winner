@@ -1,5 +1,6 @@
-import { SubmitButton } from "@/components/submit-button";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/submit-button";
 import {
   Dialog,
   DialogContent,
@@ -9,17 +10,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { createProjectAction } from "./actions";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { EllipsisVertical } from 'lucide-react';
 import { Textarea } from "@/components/ui/textarea";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Separator } from "@/components/ui/separator";
+import { createProjectAction, getProjectsAction } from "./actions";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const { success, projects } = await getProjectsAction();
   return (
     <div className="w-full h-full">
-      <div className="header flex justify-between items-center px-3 py-3 mb-7">
+      <div className="header flex justify-between items-start px-3 py-3 mb-7">
         <h2 className="font-semibold">Projects</h2>
         <div className="flex gap-2">
           <Button variant="outline">Sort by</Button>
@@ -71,13 +74,48 @@ export default function ProjectsPage() {
                     <DialogClose asChild>
                       <Button variant="secondary">Cancel</Button>
                     </DialogClose>
-                    <SubmitButton formAction={createProjectAction} pendingText="Creating">Create</SubmitButton>
+                    <SubmitButton
+                      formAction={createProjectAction}
+                      pendingText="Creating"
+                    >
+                      Create
+                    </SubmitButton>
                   </DialogFooter>
                 </form>
               </div>
             </DialogContent>
           </Dialog>
         </div>
+      </div>
+      <div className="px-3 py-3">
+        <table className="w-full">
+          <tbody>
+            {projects?.map((project) => (
+              <tr key={project.id} className="grid-cols-6">
+                <td className="py-3 col-span-3">
+                  <Button variant="link" asChild className="py-0 px-0">
+                    <Link href={`/protected/projects/${project.id}/issues`}>{project.name}</Link>
+                  </Button>
+                  <p className="text-sm text-muted-foreground">
+                    {project.description}
+                  </p>
+                </td>
+                <td className="col-span-1">
+                  <span className="text-sm">Abajit Dey</span>
+                  <p className="text-muted-foreground text-xs">abajitdey@devflow.com</p>
+                </td>
+                <td className="col-span-1">
+                  <span className="text-sm">5 members</span>
+                </td>
+                <td className="col-span-1">
+                  <Button variant="ghost">
+                    <EllipsisVertical size={15} />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

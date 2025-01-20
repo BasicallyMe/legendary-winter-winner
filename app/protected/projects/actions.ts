@@ -1,14 +1,6 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { count } from "console";
-
-interface ProjectData {
-  name: string;
-  description: string;
-  created_by: string;
-  id: string;
-}
 
 export const createProjectAction = async (formData: FormData) => {
   const parsedFormData = Object.fromEntries(formData);
@@ -39,16 +31,50 @@ export const createProjectAction = async (formData: FormData) => {
   const project_id = project.id;
   const memberData = {
     user_id: user?.id,
-    project_id
+    project_id,
   };
 
-  const { error: errorMember } = await supabase.from("project_members").insert(memberData)
+  const { error: errorMember } = await supabase
+    .from("project_members")
+    .insert(memberData);
 
   if (errorMember) {
-    return { success: false, code: errorMember.code, message: errorMember.message }
+    return {
+      success: false,
+      code: errorMember.code,
+      message: errorMember.message,
+    };
   } else {
-    return { success: true, message: "Project created" }
+    return { success: true, message: "Project created" };
   }
+};
 
-  // return { success: true, message: "Project created"}
+
+interface Project {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export const getProjectsAction = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase
+    .from("project_members")
+    .select(`projects(id, name, description)`)
+    .eq("user_id", user?.id);
+
+  if (error) {
+    return {
+      success: false,
+      error: error.code,
+      message: error.message,
+    };
+  } else {
+    const parsedData: Project[] = data.flatMap((item) => item.projects);
+    return { success: true, projects: parsedData, message: "Data fetched successfully" };
+  }
 };

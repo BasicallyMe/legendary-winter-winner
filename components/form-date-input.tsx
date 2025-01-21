@@ -13,7 +13,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export default function FormDateInput() {
+export default function FormDateInput({ name }: { name: string }) {
+  const defaultDate = new Date();
   const [date, setDate] = React.useState<Date>()
 
   return (
@@ -22,12 +23,12 @@ export default function FormDateInput() {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-full pl-3 text-left font-normal",
             !date && "text-muted-foreground"
           )}
         >
-          <CalendarIcon />
           {date ? format(date, "PPP") : <span>Pick a date</span>}
+          <CalendarIcon className="ml-auto opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
@@ -38,6 +39,7 @@ export default function FormDateInput() {
           initialFocus
         />
       </PopoverContent>
+      <input type="hidden" name={name} value={date?.toISOString() || undefined} />
     </Popover>
   )
 }

@@ -13,7 +13,9 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { FormSelect } from "@/components/form-select";
+import DialogSelect from "@/components/dialog-select";
 import { createIssueAction } from "./actions";
 import { ChevronRight } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -61,7 +63,9 @@ const type = [
   },
 ];
 
-export default function IssuesPage() {
+export default async function IssuesPage({ params }: { params: { id: string } }) {
+  const project_id = await params?.id;
+  const createIssueActionBind = createIssueAction.bind(null, project_id)
   return (
     <div className="w-full h-full">
       <div className="header py-3 px-3 flex justify-between items-start">
@@ -96,26 +100,30 @@ export default function IssuesPage() {
                   <form>
                     <div className="mb-3">
                       <Label htmlFor="title">Title</Label>
-                      <Input placeholder="Type a name for the issue" />
+                      <Input name="title" placeholder="Type a name for the issue" />
                     </div>
                     <div className="mb-4">
                       <Label htmlFor="description">Description</Label>
-                      <Textarea placeholder="Describe your issue" />
+                      <Textarea name="description" placeholder="Describe your issue" />
                     </div>
                     <div className="flex gap-3 mb-4">
                       <div className="flex flex-col flex-1 gap-1">
                         <Label htmlFor="type">Issue type</Label>
-                        <FormSelect data={type} name="type" placeholder="Select an option" />
+                        <DialogSelect data={type} name="type" placeholder="Select an option" />
                       </div>
                       <div className="flex flex-col flex-1 gap-1">
-                        <Label htmlFor="priority">Issue type</Label>
-                        <FormSelect data={priority} name="priority" placeholder="Select an option" />
+                        <Label htmlFor="priority">Priority</Label>
+                        <DialogSelect data={priority} name="priority" placeholder="Select an option" />
                       </div>
                     </div>
                     <div className="mb-2">
                       <Label htmlFor="status">When should this be done by?</Label>
-                      <FormDateInput />
+                      <FormDateInput name="due_date" />
                     </div>
+                    <DialogFooter>
+                      <Button variant="secondary">Cancel</Button>
+                      <SubmitButton formAction={createIssueActionBind}>Add new issue</SubmitButton>
+                    </DialogFooter>
                   </form>
                 </div>
               </DialogContent>

@@ -102,7 +102,7 @@ export default function IssuesPage() {
                       <Label htmlFor="description">Description</Label>
                       <Textarea placeholder="Describe your issue" />
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 mb-4">
                       <div className="flex flex-col flex-1 gap-1">
                         <Label htmlFor="type">Issue type</Label>
                         <FormSelect data={type} name="type" placeholder="Select an option" />

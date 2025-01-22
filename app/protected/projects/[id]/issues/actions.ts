@@ -10,10 +10,9 @@ export const createIssueAction = async (project_id: string, formData: FormData) 
     if (Object.keys(parsedData).length === 0) {
         return { error: "Required values missing" };
     }
-
-    console.log(parsedData)
-
-    // const { error } = await supabase.from("issues").insert(data);
+    parsedData["project_id"] = project_id;
+    
+    const { error } = await supabase.from("issues").insert(parsedData);
 
     // if (error) {
     //     console.log(`${error.code} ${error.message}`);
@@ -22,4 +21,9 @@ export const createIssueAction = async (project_id: string, formData: FormData) 
     //     return { success: true, message: "Issue created" }
     // }
     
+}
+
+export const getProjectMembers = async (project_id: string) => {
+    const supabase = await createClient();
+     
 }

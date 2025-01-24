@@ -23,7 +23,7 @@ export default function FormDateInput({ name }: { name: string }) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-full pl-3 text-left font-normal",
+            "pl-3 text-left font-normal",
             !date && "text-muted-foreground"
           )}
         >

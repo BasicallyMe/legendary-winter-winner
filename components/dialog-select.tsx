@@ -38,7 +38,7 @@ export default function DialogSelect({
           <ChevronsUpDown size={15} />
         </SelectIcon>
       </SelectTrigger>
-      <SelectContent className={cn("bg-white min-w-[130px]", className)}>
+      <SelectContent className={cn("bg-white min-w-[130px] shadow-lg", className)}>
         {data?.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             {item.label}

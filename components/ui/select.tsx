@@ -13,6 +13,7 @@ const SelectPortal = SelectPrimitive.Portal;
 const SelectContent = SelectPrimitive.Content;
 const SelectViewport = SelectPrimitive.Viewport;
 const SelectGroup = SelectPrimitive.Group;
+const SelectItemText = SelectPrimitive.ItemText;
 
 const SelectTrigger = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.Trigger>,
@@ -56,4 +57,5 @@ export {
     SelectViewport,
     SelectGroup,
     SelectItem,
+    SelectItemText,
 }

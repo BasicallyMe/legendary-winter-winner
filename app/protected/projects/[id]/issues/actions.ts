@@ -17,12 +17,12 @@ export const createIssueAction = async (
 
   const { error } = await supabase.from("issues").insert(parsedData);
 
-  // if (error) {
-  //     console.log(`${error.code} ${error.message}`);
-  //     return { success: false, code: error.code, message: error.message };
-  // } else {
-  //     return { success: true, message: "Issue created" }
-  // }
+  if (error) {
+      console.log(`${error.code} ${error.message}`);
+      return { success: false, code: error.code, message: error.message };
+  } else {
+      return { success: true, message: "Issue created" }
+  }
 };
 
 export const getProjectMembers = async (project_id: string) => {

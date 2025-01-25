@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useState } from "react"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 
@@ -14,8 +14,20 @@ import {
 } from "@/components/ui/popover"
 
 export default function FormDateInput({ name }: { name: string }) {
-  const defaultDate = new Date();
-  const [date, setDate] = React.useState<Date>()
+  const [month, setMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [inputValue, setInputValue] = useState("");
+
+  const handleDayPickerSelect = (date: Date | undefined) => {
+    if (!date) {
+      setInputValue("");
+      setSelectedDate(undefined);
+    } else {
+      setSelectedDate(date);
+      setMonth(date);
+      setInputValue(date.toISOString())
+    }
+  }
 
   return (
     <Popover modal={true}>
@@ -24,22 +36,24 @@ export default function FormDateInput({ name }: { name: string }) {
           variant={"outline"}
           className={cn(
             "pl-3 text-left font-normal",
-            !date && "text-muted-foreground"
+            !selectedDate && "text-muted-foreground"
           )}
         >
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
           <CalendarIcon className="ml-auto opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
+          month={month}
+          onMonthChange={setMonth}
+          selected={selectedDate}
+          onSelect={handleDayPickerSelect}
           initialFocus
         />
       </PopoverContent>
-      <input type="hidden" name={name} value={date?.toISOString() || undefined} />
+      <input type="hidden" name={name} value={inputValue} />
     </Popover>
   )
 }

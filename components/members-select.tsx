@@ -7,6 +7,8 @@ import {
   SelectContent,
   SelectIcon,
   SelectItem,
+  SelectItemText,
+  MemberSelectItem,
 } from "@/components/ui/select";
 import { ChevronsUpDown } from "lucide-react";
 import { type ComponentProps } from "react";
@@ -45,18 +47,38 @@ export default function MemberSelect({
         className={cn("bg-white min-w-[130px] shadow-lg", className)}
       >
         {data?.map((item) => (
-          <SelectItem key={item.email} value={item.user_id} textValue={`${item.first_name} ${item.last_name}`}>
+          // <SelectItem
+          //   key={item.email}
+          //   value={item.user_id}
+          //   textValue={`${item.first_name} ${item.last_name}`}
+          // >
+          //   <div className="flex gap-2">
+          //     <Avatar>
+          //       <AvatarImage src="https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_6.png" />
+          //       <AvatarFallback>{`${item.first_name.charAt(0)} ${item.last_name.charAt(0)}`}</AvatarFallback>
+          //     </Avatar>
+          //     <div>
+          //       <div>{`${item.first_name} ${item.last_name}`}</div>
+          //       <div className="text-sm text-muted-foreground">
+          //         {item.email}
+          //       </div>
+          //     </div>
+          //   </div>
+          // </SelectItem>
+          <MemberSelectItem key={item.email} value={item.user_id}>
             <div className="flex gap-2">
-              <Avatar >
+              <Avatar>
                 <AvatarImage src="https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_6.png" />
-                <AvatarFallback>{`${item.first_name.charAt(0)} ${item.last_name.charAt(0)}`}</AvatarFallback>
+                <AvatarFallback>{`${item.first_name.charAt(0)}${item.last_name.charAt(0)}`}</AvatarFallback>
               </Avatar>
-              <div>
-                <div>{`${item.first_name} ${item.last_name}`}</div>
-                <div className="text-sm text-muted-foreground">{item.email}</div>
+              <div className="flex flex-col">
+                <SelectItemText>{`${item.first_name} ${item.last_name}`}</SelectItemText>
+                <span className="text-muted-foreground text-xs">
+                  {item.email}
+                </span>
               </div>
             </div>
-          </SelectItem>
+          </MemberSelectItem>
         ))}
       </SelectContent>
     </Select>

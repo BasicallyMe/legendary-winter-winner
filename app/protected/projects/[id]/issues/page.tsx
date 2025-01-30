@@ -18,7 +18,7 @@ import MemberSelect from "@/components/members-select";
 import FormDateInput from "@/components/form-date-input";
 import { ChevronRight } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { createIssueAction, getProjectMembers } from "./actions";
+import { createIssueAction, getProjectMembers, getAllIssues } from "./actions";
 
 const priority = [
   {
@@ -32,6 +32,10 @@ const priority = [
   {
     value: "high",
     label: "High",
+  },
+  {
+    value: "critical",
+    label: "Critical",
   },
 ];
 
@@ -93,20 +97,30 @@ export default async function IssuesPage({
   const urlParams = await params;
   const createIssueActionBind = createIssueAction.bind(null, urlParams.id);
   const {
-    success,
+    success: memberFetchSuccess,
     data: projectMembers,
-    message,
+    message: memberFetchStatusMessage,
   } = await getProjectMembers(urlParams.id);
+  const { 
+    success: issueFetchSuccess,
+    data: issues,
+    message: issueFetchStatusMessage
+  } = await getAllIssues(urlParams.id)
   return (
     <div className="w-full h-full">
-      <div className="header py-3 px-3 flex justify-between items-start">
+      <div className="header py-7 px-3 flex justify-between items-start">
         <div className="flex gap-1 items-center text-muted-foreground text-sm">
-          <Link href="/protected/projects">Projects</Link>
+          <Link
+            href="/protected/projects"
+            className="underline-offset-4 hover:underline"
+          >
+            Projects
+          </Link>
           <ChevronRight size={15} />
           <h2 className="font-semibold text-black">Giant Octopus Dev</h2>
         </div>
       </div>
-      <div className="px-3 py-2">
+      <div className="px-5 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button variant="outline">Table view</Button>
@@ -122,9 +136,9 @@ export default async function IssuesPage({
               </DialogTrigger>
               <DialogContent className="left-full !translate-x-[-100%] h-full !rounded-none">
                 <DialogHeader>
-                  <DialogTitle>Create a new issue</DialogTitle>
+                  <DialogTitle>Add a new task</DialogTitle>
                   <DialogDescription>
-                    Add a new issue to this project
+                    Add a new task to this project
                   </DialogDescription>
                 </DialogHeader>
                 <div>
@@ -133,19 +147,19 @@ export default async function IssuesPage({
                       <Label htmlFor="title">Title</Label>
                       <Input
                         name="title"
-                        placeholder="Type a name for the issue"
+                        placeholder="Type a name for the task"
                       />
                     </div>
                     <div className="mb-4">
                       <Label htmlFor="description">Description</Label>
                       <Textarea
                         name="description"
-                        placeholder="Describe your issue"
+                        placeholder="Describe your task"
                       />
                     </div>
                     <div className="flex gap-3 mb-4">
                       <div className="flex flex-col flex-1 gap-2">
-                        <Label htmlFor="type">Issue type</Label>
+                        <Label htmlFor="type">Type of task</Label>
                         <DialogSelect
                           data={type}
                           name="type"
@@ -188,8 +202,11 @@ export default async function IssuesPage({
                     </div>
                     <DialogFooter>
                       <Button variant="secondary">Cancel</Button>
-                      <SubmitButton formAction={createIssueActionBind}>
-                        Add new issue
+                      <SubmitButton
+                        formAction={createIssueActionBind}
+                        pendingText="Adding..."
+                      >
+                        Add task
                       </SubmitButton>
                     </DialogFooter>
                   </form>
@@ -199,6 +216,7 @@ export default async function IssuesPage({
           </div>
         </div>
       </div>
+      
     </div>
   );
 }
